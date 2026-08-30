@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./services/supabase";
 import LandingPage from "./pages/LandingPage";
-import { LogOut } from "lucide-react";
+import DashboardLayout from "./components/dashboard/DashboardLayout";
 
 function App() {
   const [session, setSession] = useState(null);
@@ -16,7 +16,6 @@ function App() {
         setCheckingSession(false);
       })
       .catch((err) => {
-        console.error("Supabase getSession failed:", err);
         setLoadError(err.message);
         setCheckingSession(false);
       });
@@ -30,45 +29,23 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-  };
-
   if (checkingSession) {
     return (
-      <div
-        style={{ padding: 40, textAlign: "center", fontFamily: "sans-serif" }}
-      >
-        جاري التحميل...
-      </div>
+      <div style={{ padding: 40, textAlign: "center" }}>جاري التحميل...</div>
     );
   }
 
   if (loadError) {
     return (
-      <div
-        style={{
-          padding: 40,
-          textAlign: "center",
-          fontFamily: "sans-serif",
-          color: "red",
-        }}
-      >
-        صار خطأ بالاتصال بـ Supabase: {loadError}
+      <div style={{ padding: 40, textAlign: "center", color: "red" }}>
+        صار خطأ: {loadError}
       </div>
     );
   }
 
   if (!session) return <LandingPage />;
 
-  return (
-    <div style={{ padding: 40, textAlign: "center" }}>
-      <p>أهلاً {session.user.email} 👋</p>
-      <button onClick={handleLogout} style={{ marginTop: 12 }}>
-        <LogOut size={16} /> تسجيل خروج
-      </button>
-    </div>
-  );
+  return <DashboardLayout userEmail={session.user.email} />;
 }
 
 export default App;
