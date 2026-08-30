@@ -1,0 +1,6 @@
+.section {
+  background: var(--sky-soft);
+  padding: 80px 24px;
+  display: flex;
+  justify-content: center;
+}

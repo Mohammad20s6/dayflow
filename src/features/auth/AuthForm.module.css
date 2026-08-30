@@ -3,22 +3,22 @@
   max-width: 380px;
   margin: 80px auto;
   padding: 32px;
-  background: #ffffff;
+  background: var(--surface);
   border-radius: 16px;
-  box-shadow: 0 10px 30px -10px rgba(2, 132, 199, 0.15);
+  box-shadow: 0 10px 30px -10px rgba(2, 132, 199, 0.2);
   text-align: center;
 }
 
 .title {
   font-size: 28px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--ink);
   margin-bottom: 4px;
 }
 
 .subtitle {
   font-size: 14px;
-  color: #64748b;
+  color: var(--ink-soft);
   margin-bottom: 24px;
 }
 
@@ -32,14 +32,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 10px 14px;
   transition: border-color 0.2s;
 }
 
 .inputGroup:focus-within {
-  border-color: #0284c7;
+  border-color: var(--sky);
 }
 
 .inputGroup input {
@@ -47,10 +47,12 @@
   outline: none;
   flex: 1;
   font-size: 14px;
+  background: transparent;
+  color: var(--ink);
 }
 
 .icon {
-  color: #94a3b8;
+  color: var(--ink-mute);
   flex-shrink: 0;
 }
 
@@ -59,7 +61,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #0284c7;
+  background: var(--sky);
   color: white;
   border: none;
   border-radius: 10px;
@@ -71,7 +73,7 @@
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: #0369a1;
+  background: var(--sky-dark);
 }
 
 .submitBtn:disabled {
@@ -90,12 +92,12 @@
 }
 
 .error {
-  color: #dc2626;
+  color: var(--danger);
   font-size: 13px;
 }
 
 .info {
-  color: #0284c7;
+  color: var(--sky);
   font-size: 13px;
 }
 
@@ -103,7 +105,7 @@
   margin-top: 18px;
   background: none;
   border: none;
-  color: #0284c7;
+  color: var(--sky);
   font-size: 13px;
   cursor: pointer;
 }

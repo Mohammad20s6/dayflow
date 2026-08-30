@@ -1,0 +1,194 @@
+.section {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 24px 110px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.subheading {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14.5px;
+  margin-bottom: 64px;
+}
+
+.flow {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.track {
+  position: absolute;
+  top: 34px;
+  left: 6%;
+  right: 6%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border) 12%,
+    var(--border) 88%,
+    transparent
+  );
+  z-index: 0;
+}
+
+.flowDot {
+  position: absolute;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sky);
+  box-shadow: 0 0 12px 2px var(--sky);
+  animation: flow 4s ease-in-out infinite;
+}
+
+@keyframes flow {
+  0%,
+  100% {
+    left: 2%;
+    opacity: 0.9;
+  }
+  50% {
+    left: 96%;
+    opacity: 0.4;
+  }
+}
+
+.step {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  animation: rise 0.5s ease forwards;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.circle {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--sky);
+  box-shadow: 0 10px 24px -10px var(--sky);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: transform 0.25s ease;
+}
+
+.step:hover .circle {
+  transform: translateY(-4px);
+}
+
+.badge {
+  position: absolute;
+  inset-inline-end: -4px;
+  top: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--amber);
+  color: var(--deep);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--paper);
+}
+
+.stepTitle {
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.stepText {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 190px;
+}
+
+@media (max-width: 780px) {
+  .flow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+  }
+  .track {
+    top: 0;
+    bottom: 0;
+    left: 33px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--border) 8%,
+      var(--border) 92%,
+      transparent
+    );
+  }
+  .flowDot {
+    left: -3px;
+    top: auto;
+    animation: flowVertical 4s ease-in-out infinite;
+  }
+  @keyframes flowVertical {
+    0%,
+    100% {
+      top: 2%;
+      opacity: 0.9;
+    }
+    50% {
+      top: 96%;
+      opacity: 0.4;
+    }
+  }
+  .step {
+    flex-direction: row;
+    text-align: start;
+    gap: 20px;
+  }
+  .circle {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+  .stepText {
+    max-width: none;
+  }
+}

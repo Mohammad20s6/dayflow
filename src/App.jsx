@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./services/supabase";
-import AuthForm from "./features/auth/AuthForm";
+import LandingPage from "./pages/LandingPage";
 import { LogOut } from "lucide-react";
 
 function App() {
   const [session, setSession] = useState(null);
   const [checkingSession, setCheckingSession] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   useEffect(() => {
-    // فحص الجلسة الحالية أول ما يفتح التطبيق
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setCheckingSession(false);
-    });
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setSession(session);
+        setCheckingSession(false);
+      })
+      .catch((err) => {
+        console.error("Supabase getSession failed:", err);
+        setLoadError(err.message);
+        setCheckingSession(false);
+      });
 
-    // الاستماع لأي تغيير بحالة تسجيل الدخول (دخول/خروج) بشكل حي
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) =>
@@ -28,9 +34,32 @@ function App() {
     await supabase.auth.signOut();
   };
 
-  if (checkingSession) return null; // أو مؤشر تحميل بسيط لاحقاً
+  if (checkingSession) {
+    return (
+      <div
+        style={{ padding: 40, textAlign: "center", fontFamily: "sans-serif" }}
+      >
+        جاري التحميل...
+      </div>
+    );
+  }
 
-  if (!session) return <AuthForm />;
+  if (loadError) {
+    return (
+      <div
+        style={{
+          padding: 40,
+          textAlign: "center",
+          fontFamily: "sans-serif",
+          color: "red",
+        }}
+      >
+        صار خطأ بالاتصال بـ Supabase: {loadError}
+      </div>
+    );
+  }
+
+  if (!session) return <LandingPage />;
 
   return (
     <div style={{ padding: 40, textAlign: "center" }}>

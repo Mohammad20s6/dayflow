@@ -1,0 +1,46 @@
+:root {
+  /* الوضع الليلي — الافتراضي */
+  --ink: #ecedff;
+  --ink-soft: #a5a6c9;
+  --ink-mute: #6b6c93;
+  --paper: #100b1f;
+  --paper-translucent: rgba(16, 11, 31, 0.85);
+  --surface: #1b1330;
+  --sky: #8b5cf6;
+  --sky-dark: #7c3aed;
+  --sky-soft: rgba(139, 92, 246, 0.14);
+  --amber: #ffb020;
+  --amber-soft: rgba(255, 176, 32, 0.14);
+  --amber-dark: #d97706;
+  --border: #2a2044;
+  --deep: #0a0716;
+  --danger: #fb7185;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+[data-theme="light"] {
+  --ink: #1e1b2e;
+  --ink-soft: #5b5675;
+  --ink-mute: #9691ac;
+  --paper: #f7f5fc;
+  --paper-translucent: rgba(247, 245, 252, 0.9);
+  --surface: #ffffff;
+  --sky: #7c3aed;
+  --sky-dark: #6d28d9;
+  --sky-soft: #ede9fe;
+  --amber: #f59e0b;
+  --amber-soft: #fef3c7;
+  --amber-dark: #b45309;
+  --border: #e4dff5;
+  --deep: #1e1b2e;
+  --danger: #dc2626;
+}
+
+body {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
