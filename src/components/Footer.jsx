@@ -1,5 +1,5 @@
 // import { Git } from "lucide-react";
-import Logo from "./logo";
+import Logo from "./Logo";
 import styles from "./Footer.module.css";
 
 function GithubIcon({ size = 18 }) {
