@@ -38,7 +38,10 @@
   background: var(--sky-soft);
   border: 1px solid var(--sky);
 }
-
+.taskBlockDone {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
 .freeBlock {
   background: var(--amber-soft);
   border: 1.5px dashed var(--amber);

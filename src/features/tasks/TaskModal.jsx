@@ -4,26 +4,35 @@ import { X, CalendarDays, Clock3 } from "lucide-react";
 
 import { closeTaskModal } from "../ui/uiSlice";
 import { useCreateTask, useUpdateTask, useTasks } from "./tasksQueries";
-import { useCategories } from "../categories/categoriesQueries";
+// import { useCategories } from "../categories/categoriesQueries";
+
+import {
+  useCategories,
+  useCreateCategory,
+} from "../categories/categoriesQueries";
 
 import styles from "./TaskModal.module.css";
 
 function toLocalInput(date) {
   const d = new Date(date);
 
+  if (Number.isNaN(d.getTime())) {
+    return "";
+  }
+
   const pad = (n) => String(n).padStart(2, "0");
 
-  return `${d.getFullYear()}-${pad(
-    d.getMonth() + 1,
-  )}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+    d.getDate(),
+  )}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 export default function TaskModal({ userId }) {
   const dispatch = useDispatch();
 
-  const { addTaskOpen, editingTaskId } = useSelector((s) => s.ui.modal);
+  const { addTaskOpen, editingTaskId } = useSelector((state) => state.ui.modal);
 
-  const filters = useSelector((s) => s.ui.filters);
+  const filters = useSelector((state) => state.ui.filters);
 
   const { data: tasks } = useTasks(userId, filters);
   const { data: categories } = useCategories(userId);
@@ -36,9 +45,38 @@ export default function TaskModal({ userId }) {
   const [endTime, setEndTime] = useState("");
   const [error, setError] = useState(null);
 
+  const createTask = useCreateTask(userId);
+  const updateTask = useUpdateTask(userId);
+
+  // new
+  const createCategory = useCreateCategory(userId);
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+
+  const handleAddCategory = async () => {
+    if (!newCategoryName.trim()) return;
+    const created = await createCategory.mutateAsync({
+      name: newCategoryName.trim(),
+      color: "#8b5cf6",
+    });
+    setCategoryId(created.id);
+    setNewCategoryName("");
+    setAddingCategory(false);
+  };
+
+  /*
+   * تجهيز البيانات عند:
+   * - فتح Modal الإضافة
+   * - فتح Modal التعديل
+   * - الانتقال من إضافة إلى تعديل أو العكس
+   */
   useEffect(() => {
+    if (!addTaskOpen) {
+      return;
+    }
+
     if (editingTask) {
-      setTitle(editingTask.title);
+      setTitle(editingTask.title || "");
       setCategoryId(editingTask.category_id || "");
       setStartTime(toLocalInput(editingTask.start_time));
       setEndTime(toLocalInput(editingTask.end_time));
@@ -50,22 +88,57 @@ export default function TaskModal({ userId }) {
     }
 
     setError(null);
-  }, [editingTaskId, addTaskOpen]);
+  }, [editingTask, editingTaskId, addTaskOpen]);
 
-  const createTask = useCreateTask(userId);
-  const updateTask = useUpdateTask(userId);
+  /*
+   * إغلاق الـ Modal عند الضغط على Escape
+   */
+  useEffect(() => {
+    if (!addTaskOpen) {
+      return;
+    }
 
-  if (!addTaskOpen) return null;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        dispatch(closeTaskModal());
+      }
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [addTaskOpen, dispatch]);
+
+  if (!addTaskOpen) {
+    return null;
+  }
+
+  const isSaving = createTask.isPending || updateTask.isPending;
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (isSaving) {
+      return;
+    }
+
     setError(null);
 
-    if (!title.trim()) {
+    /*
+     * 1. التحقق من العنوان
+     */
+    const trimmedTitle = title.trim();
+
+    if (!trimmedTitle) {
       setError("اكتب عنوان المهمة أولًا");
       return;
     }
 
+    /*
+     * 2. التحقق من الوقت
+     */
     if (!startTime || !endTime) {
       setError("حدد وقت البداية والنهاية");
       return;
@@ -79,13 +152,19 @@ export default function TaskModal({ userId }) {
       return;
     }
 
+    /*
+     * 3. النهاية يجب أن تكون بعد البداية
+     */
     if (end <= start) {
       setError("وقت النهاية لازم يكون بعد وقت البداية");
       return;
     }
 
+    /*
+     * البيانات التي سترسل إلى Supabase
+     */
     const payload = {
-      title: title.trim(),
+      title: trimmedTitle,
       category_id: categoryId || null,
       start_time: start.toISOString(),
       end_time: end.toISOString(),
@@ -101,27 +180,42 @@ export default function TaskModal({ userId }) {
         await createTask.mutateAsync(payload);
       }
 
+      /*
+       * إذا نجحت العملية:
+       * أغلق الـ Modal
+       */
       dispatch(closeTaskModal());
     } catch (err) {
-      setError(err.message || "صار خطأ أثناء حفظ المهمة");
+      setError(err?.message || "صار خطأ أثناء حفظ المهمة");
     }
   };
 
-  const isSaving = createTask.isPending || updateTask.isPending;
+  const handleOverlayClick = () => {
+    if (!isSaving) {
+      dispatch(closeTaskModal());
+    }
+  };
+
+  const handleClose = () => {
+    if (!isSaving) {
+      dispatch(closeTaskModal());
+    }
+  };
 
   return (
     <div
       className={styles.overlay}
-      onClick={() => dispatch(closeTaskModal())}
+      onClick={handleOverlayClick}
       role="presentation"
     >
       <div
         className={styles.modal}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="task-modal-title"
       >
+        {/* Header */}
         <div className={styles.header}>
           <div className={styles.heading}>
             <div className={styles.headingIcon}>
@@ -144,51 +238,84 @@ export default function TaskModal({ userId }) {
           <button
             type="button"
             className={styles.closeBtn}
-            onClick={() => dispatch(closeTaskModal())}
+            onClick={handleClose}
+            disabled={isSaving}
             aria-label="إغلاق"
           >
             <X size={18} />
           </button>
         </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className={styles.form} noValidate>
+          {/* Title */}
           <label className={styles.field}>
             <span className={styles.label}>عنوان المهمة</span>
 
             <input
               className={styles.input}
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(event) => setTitle(event.target.value)}
               placeholder="مثال: دراسة React Query"
               autoFocus
               required
+              disabled={isSaving}
             />
           </label>
 
+          {/* Category */}
           <label className={styles.field}>
             <span className={styles.label}>التصنيف</span>
-
-            <select
-              className={styles.input}
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-            >
-              <option value="">بدون تصنيف</option>
-
-              {categories?.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+            {!addingCategory ? (
+              <select
+                className={styles.input}
+                value={categoryId}
+                onChange={(e) => {
+                  if (e.target.value === "__new__") setAddingCategory(true);
+                  else setCategoryId(e.target.value);
+                }}
+                disabled={isSaving}
+              >
+                <option value="">بدون تصنيف</option>
+                {categories?.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+                <option value="__new__">+ إضافة تصنيف جديد</option>
+              </select>
+            ) : (
+              <div style={{ display: "flex", gap: 8 }}>
+                <input
+                  autoFocus
+                  placeholder="اسم التصنيف"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" &&
+                    (e.preventDefault(), handleAddCategory())
+                  }
+                />
+                <button
+                  type="button"
+                  onClick={handleAddCategory}
+                  className={styles.submitBtn}
+                  style={{ width: 70 }}
+                >
+                  إضافة
+                </button>
+              </div>
+            )}
           </label>
 
+          {/* Time section */}
           <div className={styles.sectionTitle}>
             <Clock3 size={15} />
             <span>موعد المهمة</span>
           </div>
 
           <div className={styles.timeGrid}>
+            {/* Start */}
             <label className={styles.field}>
               <span className={styles.label}>من</span>
 
@@ -197,13 +324,15 @@ export default function TaskModal({ userId }) {
                   className={styles.input}
                   type="datetime-local"
                   value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
+                  onChange={(event) => setStartTime(event.target.value)}
                   dir="ltr"
                   required
+                  disabled={isSaving}
                 />
               </div>
             </label>
 
+            {/* End */}
             <label className={styles.field}>
               <span className={styles.label}>إلى</span>
 
@@ -212,14 +341,16 @@ export default function TaskModal({ userId }) {
                   className={styles.input}
                   type="datetime-local"
                   value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
+                  onChange={(event) => setEndTime(event.target.value)}
                   dir="ltr"
                   required
+                  disabled={isSaving}
                 />
               </div>
             </label>
           </div>
 
+          {/* Error */}
           {error && (
             <div className={styles.error} role="alert">
               <span>!</span>
@@ -227,11 +358,12 @@ export default function TaskModal({ userId }) {
             </div>
           )}
 
+          {/* Footer */}
           <div className={styles.footer}>
             <button
               type="button"
               className={styles.cancelBtn}
-              onClick={() => dispatch(closeTaskModal())}
+              onClick={handleClose}
               disabled={isSaving}
             >
               إلغاء

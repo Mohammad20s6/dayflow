@@ -27,3 +27,13 @@
   color: var(--ink-mute);
   font-size: 14px;
 }
+@media (max-width: 780px) {
+  .content {
+    padding: 20px 16px 90px;
+  }
+}
+@media (max-width: 780px) {
+  .content {
+    padding: 20px 16px 92px;
+  }
+}

@@ -86,3 +86,47 @@
   border-color: var(--danger);
   color: var(--danger);
 }
+@media (max-width: 640px) {
+  .searchBox {
+    display: none;
+  }
+  .userEmail {
+    display: none;
+  }
+  .addBtnText {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .searchBox {
+    display: none;
+  }
+
+  .userEmail {
+    display: none;
+  }
+
+  .addBtnText {
+    display: none;
+  }
+
+  .addBtn {
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    justify-content: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .actions {
+    gap: 6px;
+  }
+
+  .logoutBtn {
+    width: 34px;
+    height: 34px;
+  }
+}

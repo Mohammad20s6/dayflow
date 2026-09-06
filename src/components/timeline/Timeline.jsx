@@ -42,14 +42,13 @@ function Labels() {
 function Track({ children }) {
   return <div className={styles.track}>{children}</div>;
 }
-
 function TaskBlock({ task }) {
   const { toPercent } = useTimelineContext();
   const left = toPercent(task.start_time);
   const width = toPercent(task.end_time) - left;
   return (
     <div
-      className={styles.taskBlock}
+      className={`${styles.taskBlock} ${task.is_completed ? styles.taskBlockDone : ""}`}
       style={{ left: `${left}%`, width: `${Math.max(width, 2)}%` }}
       title={task.title}
     >

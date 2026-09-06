@@ -6,9 +6,13 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
+
 import { useDispatch, useSelector } from "react-redux";
+
 import { toggleSidebar } from "../../features/ui/uiSlice";
+
 import Logo from "../Logo";
+
 import styles from "./Sidebar.module.css";
 
 const NAV = [
@@ -19,7 +23,8 @@ const NAV = [
 ];
 
 export default function Sidebar() {
-  const collapsed = useSelector((s) => s.ui.sidebarCollapsed);
+  const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
+
   const dispatch = useDispatch();
 
   return (
@@ -27,11 +32,17 @@ export default function Sidebar() {
       <div className={styles.top}>
         <div className={styles.brand}>
           <Logo size={26} />
-          {!collapsed && <span className={styles.wordmark}>DayFlow</span>}
+
+          <span className={styles.wordmark}>DayFlow</span>
         </div>
+
         <button
+          type="button"
           className={styles.collapseBtn}
           onClick={() => dispatch(toggleSidebar())}
+          aria-label={
+            collapsed ? "فتح القائمة الجانبية" : "تصغير القائمة الجانبية"
+          }
         >
           {collapsed ? (
             <PanelLeftOpen size={18} />
@@ -42,15 +53,20 @@ export default function Sidebar() {
       </div>
 
       <nav className={styles.nav}>
-        {NAV.map((item, i) => {
+        {NAV.map((item) => {
           const Icon = item.icon;
+
           return (
             <button
-              key={i}
-              className={`${styles.navItem} ${i === 0 ? styles.active : ""}`}
+              type="button"
+              key={item.label}
+              className={`${styles.navItem} ${
+                item.label === "اليوم" ? styles.active : ""
+              }`}
             >
               <Icon size={19} />
-              {!collapsed && <span>{item.label}</span>}
+
+              <span className={styles.navLabel}>{item.label}</span>
             </button>
           );
         })}
