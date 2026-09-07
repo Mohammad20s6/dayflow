@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   sidebarCollapsed: false,
+  activeView: "today", // today | all | categories | settings
+  searchQuery: "",
   filters: {
     category: "all",
-    status: "all", // all | completed | pending
+    status: "all",
   },
   modal: {
     addTaskOpen: false,
@@ -18,6 +20,12 @@ const uiSlice = createSlice({
   reducers: {
     toggleSidebar(state) {
       state.sidebarCollapsed = !state.sidebarCollapsed;
+    },
+    setActiveView(state, action) {
+      state.activeView = action.payload;
+    },
+    setSearchQuery(state, action) {
+      state.searchQuery = action.payload;
     },
     setCategoryFilter(state, action) {
       state.filters.category = action.payload;
@@ -42,6 +50,8 @@ const uiSlice = createSlice({
 
 export const {
   toggleSidebar,
+  setActiveView,
+  setSearchQuery,
   setCategoryFilter,
   setStatusFilter,
   openAddTaskModal,

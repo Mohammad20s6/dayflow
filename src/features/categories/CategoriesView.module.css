@@ -1,0 +1,106 @@
+.wrap {
+  max-width: 560px;
+}
+.heading {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.createRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.swatches {
+  display: flex;
+  gap: 6px;
+}
+.swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+.createRow input {
+  flex: 1;
+  min-width: 140px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13.5px;
+}
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--sky);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.state {
+  color: var(--ink-mute);
+  font-size: 13.5px;
+  padding: 20px 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.name {
+  flex: 1;
+  font-size: 13.5px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.editInput {
+  flex: 1;
+  border: 1px solid var(--sky);
+  border-radius: 6px;
+  padding: 5px 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 13.5px;
+}
+.row button {
+  background: none;
+  border: none;
+  color: var(--ink-mute);
+  cursor: pointer;
+}
+.deleteBtn:hover {
+  color: var(--danger);
+}

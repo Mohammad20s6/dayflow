@@ -6,7 +6,28 @@ export async function getProfile(userId) {
     .select("*")
     .eq("id", userId)
     .single();
-  if (error) throw error;
+
+  if (error) {
+    // إذا لم يكن Profile موجوداً بعد، نحاول إنشاء واحد.
+    if (error.code === "PGRST116") {
+      const { data: newProfile, error: insertError } = await supabase
+        .from("profiles")
+        .insert({
+          id: userId,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      return newProfile;
+    }
+
+    throw error;
+  }
+
   return data;
 }
 
@@ -17,18 +38,33 @@ export async function updateProfile(userId, updates) {
     .eq("id", userId)
     .select()
     .single();
-  if (error) throw error;
+
+  if (error) {
+    throw error;
+  }
+
   return data;
 }
-
 export async function uploadAvatar(userId, file) {
-  const filePath = `${userId}/avatar.${file.name.split(".").pop()}`;
+  const extension = file.name.split(".").pop()?.toLowerCase() || "png";
+
+  const filePath = `${userId}/avatar.${extension}`;
 
   const { error: uploadError } = await supabase.storage
     .from("avatars")
-    .upload(filePath, file, { upsert: true });
-  if (uploadError) throw uploadError;
+    .upload(filePath, file, {
+      cacheControl: "3600",
+      upsert: true,
+      contentType: file.type,
+    });
 
-  const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
-  return data.publicUrl;
+  if (uploadError) {
+    throw uploadError;
+  }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("avatars").getPublicUrl(filePath);
+
+  return publicUrl;
 }
