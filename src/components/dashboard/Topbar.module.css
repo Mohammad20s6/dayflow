@@ -571,7 +571,7 @@
   }
 
   .actions {
-    direction: rtl;
+    /* direction: rtl; */
   }
 
   .searchBox {
