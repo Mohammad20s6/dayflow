@@ -241,7 +241,7 @@ COPY
 
   color: var(--ink-soft);
 
-  text-wrap: balance;
+  /* text-wrap: balance; */
 
   animation: subtitleReveal 0.8s ease 0.15s both;
 }

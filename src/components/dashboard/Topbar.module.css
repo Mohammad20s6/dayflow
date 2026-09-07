@@ -1,36 +1,86 @@
 .topbar {
+  position: relative;
+  z-index: 20;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  width: 100%;
+  min-height: 72px;
+
   padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
+
   background: var(--paper);
+  border-bottom: 1px solid var(--border);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
 }
+
+/* =========================================
+   Search
+========================================= */
 
 .searchBox {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+
+  width: 280px;
+  min-width: 0;
+
+  padding: 9px 14px;
+
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 9px 14px;
-  width: 280px;
+  border-radius: 11px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.searchBox:focus-within {
+  border-color: var(--sky);
+
+  box-shadow: 0 0 0 3px var(--sky-soft);
 }
 
 .searchBox input {
+  width: 100%;
+  min-width: 0;
+
   border: none;
   outline: none;
+
   background: transparent;
   color: var(--ink);
+
+  font-family: var(--font-body);
   font-size: 13.5px;
-  flex: 1;
+}
+
+.searchBox input::placeholder {
+  color: var(--ink-mute);
 }
 
 .searchIcon {
-  color: var(--ink-mute);
   flex-shrink: 0;
+  color: var(--ink-mute);
+
+  transition: color 0.2s ease;
 }
+
+.searchBox:focus-within .searchIcon {
+  color: var(--sky);
+}
+
+/* =========================================
+   Actions
+========================================= */
 
 .actions {
   display: flex;
@@ -38,75 +88,503 @@
   gap: 14px;
 }
 
+/* =========================================
+   Add Button
+========================================= */
+
 .addBtn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--sky);
-  color: white;
-  border: none;
-  border-radius: 10px;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 38px;
+
   padding: 9px 16px;
+
+  background: var(--sky);
+  color: #fff;
+
+  border: 1px solid transparent;
+  border-radius: 10px;
+
+  font-family: var(--font-body);
   font-size: 13.5px;
   font-weight: 600;
+
   cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.14);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .addBtn:hover {
   background: var(--sky-dark);
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.2);
 }
+
+.addBtn:active {
+  transform: translateY(0);
+}
+
+.addBtn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--sky-soft),
+    0 4px 12px rgba(2, 132, 199, 0.14);
+}
+
+/* =========================================
+   Theme
+========================================= */
+
+.themeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================================
+   User Menu
+========================================= */
 
 .userMenu {
   display: flex;
   align-items: center;
   gap: 10px;
+
   padding-inline-start: 14px;
+
   border-inline-start: 1px solid var(--border);
 }
 
 .userEmail {
-  font-size: 13px;
+  max-width: 190px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   color: var(--ink-soft);
+
+  font-family: var(--font-body);
+  font-size: 13px;
 }
 
+/* =========================================
+   Logout Button
+========================================= */
+
 .logoutBtn {
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  padding: 0;
+
+  background: transparent;
   color: var(--ink-mute);
+
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
   cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .logoutBtn:hover {
-  border-color: var(--danger);
   color: var(--danger);
+  border-color: var(--danger);
+
+  background: color-mix(in srgb, var(--danger) 7%, transparent);
+
+  transform: translateY(-1px);
 }
-@media (max-width: 640px) {
+
+.logoutBtn:active {
+  transform: translateY(0);
+}
+
+.logoutBtn:focus-visible {
+  outline: none;
+
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 15%, transparent);
+}
+
+/* =========================================
+   Mobile Brand
+========================================= */
+
+.mobileBrand {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  direction: ltr;
+}
+
+.mobileBrand span {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: var(--ink);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.brandMark {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+
+  width: 25px;
+  height: 25px;
+
+  padding: 4px;
+
+  background: var(--sky-soft);
+  border: 1px solid color-mix(in srgb, var(--sky) 25%, transparent);
+
+  border-radius: 8px;
+}
+
+.brandMark span {
+  display: block;
+
+  width: 4px;
+
+  border-radius: 3px;
+
+  background: var(--sky);
+}
+
+.brandMark span:nth-child(1) {
+  height: 8px;
+}
+
+.brandMark span:nth-child(2) {
+  height: 13px;
+}
+
+.brandMark span:nth-child(3) {
+  height: 17px;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+
+  letter-spacing: -0.3px;
+}
+
+/* =========================================
+   Logout Overlay
+========================================= */
+
+.logoutOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.42);
+
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+
+  animation: overlayIn 0.2s ease forwards;
+}
+
+.logoutDialog {
+  position: relative;
+
+  width: min(100%, 420px);
+
+  padding: 30px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+  border-radius: 20px;
+
+  text-align: center;
+
+  box-shadow:
+    0 24px 70px rgba(15, 23, 42, 0.2),
+    0 8px 25px rgba(15, 23, 42, 0.08);
+
+  animation: dialogIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dialogClose {
+  position: absolute;
+  top: 14px;
+  inset-inline-end: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+
+  background: transparent;
+  color: var(--ink-mute);
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.dialogClose:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.dialogClose:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   Dialog Icon
+========================================= */
+
+.dialogIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+
+  margin: 0 auto 18px;
+
+  color: var(--danger);
+
+  background: color-mix(in srgb, var(--danger) 9%, transparent);
+
+  border: 1px solid color-mix(in srgb, var(--danger) 16%, transparent);
+
+  border-radius: 14px;
+}
+
+/* =========================================
+   Dialog Content
+========================================= */
+
+.dialogContent h2 {
+  margin: 0;
+
+  color: var(--ink);
+
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dialogContent p {
+  margin: 10px 0 0;
+
+  color: var(--ink-soft);
+
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+/* =========================================
+   Dialog Actions
+========================================= */
+
+.dialogActions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 26px;
+}
+
+.cancelLogout,
+.confirmLogout {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 42px;
+
+  border-radius: 10px;
+
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.cancelLogout {
+  background: var(--paper);
+  color: var(--ink);
+
+  border: 1px solid var(--border);
+}
+
+.cancelLogout:hover {
+  border-color: var(--ink-mute);
+  background: var(--surface);
+
+  transform: translateY(-1px);
+}
+
+.confirmLogout {
+  background: var(--danger);
+  color: #fff;
+
+  border: 1px solid var(--danger);
+}
+
+.confirmLogout:hover {
+  filter: brightness(0.94);
+  transform: translateY(-1px);
+}
+
+.cancelLogout:active,
+.confirmLogout:active {
+  transform: translateY(0);
+}
+
+.cancelLogout:disabled,
+.confirmLogout:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================
+   Animations
+========================================= */
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   Tablet
+========================================= */
+
+@media (max-width: 800px) {
+  .topbar {
+    padding: 14px 18px;
+  }
+
   .searchBox {
-    display: none;
+    width: 220px;
   }
+
   .userEmail {
-    display: none;
-  }
-  .addBtnText {
-    display: none;
+    max-width: 130px;
   }
 }
+
+/* =========================================
+   Mobile
+========================================= */
+
 @media (max-width: 640px) {
+  .topbar {
+    min-height: 64px;
+
+    padding: 12px 16px;
+
+    /* مهم:
+       RTL الصفحة لا يعني أن ترتيبنا الداخلي
+       سينقلب بشكل غير مرغوب */
+    direction: ltr;
+  }
+
+  /* Logo على اليسار */
+  .mobileBrand {
+    display: flex;
+  }
+
+  .topbar {
+    /* الشعار يسار + الإجراءات يمين */
+    direction: ltr;
+  }
+
+  .actions {
+    direction: rtl;
+  }
+
   .searchBox {
     display: none;
   }
 
-  .userEmail {
-    display: none;
+  .userMenu {
+    padding-inline-start: 0;
+
+    border-inline-start: none;
   }
 
-  .addBtnText {
+  .userEmail {
     display: none;
   }
 
@@ -116,17 +594,106 @@
 
     padding: 0;
 
-    justify-content: center;
+    border-radius: 10px;
   }
-}
 
-@media (max-width: 420px) {
-  .actions {
-    gap: 6px;
+  .addBtnText {
+    display: none;
   }
 
   .logoutBtn {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .logoutOverlay {
+    align-items: flex-end;
+
+    padding: 12px;
+  }
+
+  .logoutDialog {
+    width: 100%;
+
+    padding: 28px 20px 20px;
+
+    border-radius: 20px 20px 16px 16px;
+
+    animation: dialogMobileIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dialogActions {
+    margin-top: 22px;
+  }
+}
+
+/* =========================================
+   Very Small Phones
+========================================= */
+
+@media (max-width: 420px) {
+  .topbar {
+    padding-inline: 12px;
+  }
+
+  .actions {
+    gap: 5px;
+  }
+
+  .brandName {
+    font-size: 16px;
+  }
+
+  .brandMark {
+    width: 24px;
+    height: 24px;
+  }
+
+  .addBtn,
+  .logoutBtn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .themeWrapper {
+    transform: scale(0.94);
+  }
+
+  .dialogContent h2 {
+    font-size: 18px;
+  }
+
+  .dialogContent p {
+    font-size: 13px;
+  }
+}
+
+@keyframes dialogMobileIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   Reduced Motion
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .logoutOverlay,
+  .logoutDialog {
+    animation: none;
+  }
+
+  .addBtn,
+  .logoutBtn,
+  .cancelLogout,
+  .confirmLogout {
+    transition: none;
   }
 }

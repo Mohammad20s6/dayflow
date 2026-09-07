@@ -39,11 +39,14 @@ export default function Hero() {
           <br />
           {/* <span className={styles.titleAccent}>أمامك بالكامل</span> */}
         </h1>
-
         <p className={styles.subtitle}>
+          بيجدول مهامك و بيحسب أوقات فراعك تلقائيا - عشان ما تضيع دقيقة و أنت عم
+          تخطط ليومك
+        </p>
+        {/* <p className={styles.subtitle}>
           DayFlow بيجدول مهامك وبيحسب أوقات فراغك تلقائياً — عشان ما تضيع دقيقة
           وانت عم تخطط ليومك مع
-        </p>
+        </p> */}
 
         <div className={styles.ctaRow}>
           <button
