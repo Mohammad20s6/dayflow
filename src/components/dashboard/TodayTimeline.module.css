@@ -1,23 +1,159 @@
 .wrap {
-  margin-bottom: 24px;
+  width: 100%;
+  margin-bottom: 0;
 }
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
 }
-.header h3 {
-  font-family: var(--font-display);
-  font-size: 16px;
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.iconBox {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--sky);
+  background: color-mix(in srgb, var(--sky) 9%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--sky) 16%, var(--border));
+  border-radius: 11px;
+}
+.eyebrow {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--ink-mute);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.title {
+  margin: 0;
   color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 .freeBadge {
-  font-family: var(--font-mono);
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 12px;
   color: var(--amber-dark);
-  background: var(--amber-soft);
-  padding: 5px 12px;
+  background: color-mix(in srgb, var(--amber-soft) 80%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--amber) 35%, var(--border));
   border-radius: 999px;
-  border: 1px solid var(--amber);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--amber) 7%, transparent);
+}
+.timelineCard {
+  position: relative;
+  min-width: 0;
+  padding: 20px;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--surface) 98%, var(--sky)),
+    var(--surface)
+  );
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow:
+    0 12px 35px color-mix(in srgb, var(--ink) 5%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 40%, transparent);
+}
+.timelineCard::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: -110px;
+  left: 12%;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--sky) 6%, transparent);
+  filter: blur(30px);
+  pointer-events: none;
+}
+.loading {
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: var(--ink-mute);
+  font-size: 12.5px;
+}
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid color-mix(in srgb, var(--sky) 15%, transparent);
+  border-top-color: var(--sky);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.emptyHint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 9px 12px;
+  color: var(--ink-mute);
+  background: color-mix(in srgb, var(--sky) 4%, transparent);
+  border-radius: 9px;
+  font-size: 11.5px;
+}
+.emptyHint svg {
+  flex-shrink: 0;
+  color: var(--sky);
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 780px) {
+  .header {
+    align-items: flex-start;
+  }
+  .timelineCard {
+    padding: 14px;
+    border-radius: 15px;
+  }
+  .freeBadge {
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+}
+@media (max-width: 520px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .freeBadge {
+    align-self: flex-start;
+  }
+  .timelineCard {
+    padding: 10px;
+  }
+  .emptyHint {
+    align-items: flex-start;
+    justify-content: flex-start;
+    line-height: 1.6;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
 }

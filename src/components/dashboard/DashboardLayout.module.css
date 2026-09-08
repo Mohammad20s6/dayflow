@@ -1,39 +1,117 @@
 .layout {
-  display: flex;
   min-height: 100vh;
-  background: var(--paper);
+  display: flex;
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      color-mix(in srgb, var(--sky) 4%, transparent),
+      transparent 28%
+    ),
+    var(--paper);
 }
-
 .main {
+  min-width: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0;
 }
-
 .content {
   flex: 1;
+  width: 100%;
   padding: 32px;
 }
-
-.placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  min-height: 300px;
-  border: 1.5px dashed var(--border);
-  border-radius: 16px;
-  color: var(--ink-mute);
-  font-size: 14px;
+.contentInner {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
 }
-@media (max-width: 780px) {
+.dashboardView {
+  width: 100%;
+  animation: pageEnter 0.35s ease both;
+}
+.pageHeading {
+  margin-bottom: 28px;
+}
+.sectionEyebrow {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--sky);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.pageTitle,
+.sectionTitle {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+.pageTitle {
+  font-size: clamp(24px, 3vw, 32px);
+}
+.sectionTitle {
+  font-size: 20px;
+}
+.pageDescription {
+  max-width: 600px;
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+.tasksSection {
+  margin-top: 28px;
+}
+.sectionHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 1000px) {
   .content {
-    padding: 20px 16px 90px;
+    padding: 28px 24px;
   }
 }
 @media (max-width: 780px) {
   .content {
-    padding: 20px 16px 92px;
+    padding: 22px 16px 96px;
+  }
+  .pageHeading {
+    margin-bottom: 22px;
+  }
+  .tasksSection {
+    margin-top: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .content {
+    padding-inline: 12px;
+  }
+  .pageTitle {
+    font-size: 25px;
+  }
+  .sectionTitle {
+    font-size: 18px;
+  }
+  .pageDescription {
+    font-size: 12.5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dashboardView {
+    animation: none;
   }
 }

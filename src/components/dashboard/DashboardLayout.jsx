@@ -7,30 +7,83 @@ import TaskModal from "../../features/tasks/TaskModal";
 import CategoriesView from "../../features/categories/CategoriesView";
 import SettingsView from "../../features/profile/SettingsView";
 import styles from "./DashboardLayout.module.css";
-
 export default function DashboardLayout({ userId, userEmail }) {
   const activeView = useSelector((s) => s.ui.activeView);
-
   return (
     <div className={styles.layout}>
-      <Sidebar />
-      <div className={styles.main}>
-        <Topbar userEmail={userEmail} />
+      {" "}
+      <Sidebar />{" "}
+      <main className={styles.main}>
+        {" "}
+        <Topbar userEmail={userEmail} />{" "}
         <div className={styles.content}>
-          {activeView === "today" && (
-            <>
-              <TodayTimeline userId={userId} />
-              <TaskList userId={userId} onlyToday />
-            </>
-          )}
-          {activeView === "all" && <TaskList userId={userId} />}
-          {activeView === "categories" && <CategoriesView userId={userId} />}
-          {activeView === "settings" && (
-            <SettingsView userId={userId} userEmail={userEmail} />
-          )}
-        </div>
-      </div>
-      <TaskModal userId={userId} />
+          {" "}
+          <div className={styles.contentInner}>
+            {" "}
+            {activeView === "today" && (
+              <section className={styles.dashboardView}>
+                {" "}
+                <TodayTimeline userId={userId} />{" "}
+                <div className={styles.tasksSection}>
+                  {" "}
+                  <div className={styles.sectionHeading}>
+                    {" "}
+                    <div>
+                      {" "}
+                      <span className={styles.sectionEyebrow}>
+                        {" "}
+                        قائمة اليوم{" "}
+                      </span>{" "}
+                      <h2 className={styles.sectionTitle}>
+                        {" "}
+                        مهامك اليوم{" "}
+                      </h2>{" "}
+                    </div>{" "}
+                  </div>{" "}
+                  <TaskList userId={userId} onlyToday />{" "}
+                </div>{" "}
+              </section>
+            )}{" "}
+            {activeView === "all" && (
+              <section className={styles.dashboardView}>
+                {" "}
+                <div className={styles.pageHeading}>
+                  {" "}
+                  <div>
+                    {" "}
+                    <span className={styles.sectionEyebrow}>
+                      {" "}
+                      إدارة المهام{" "}
+                    </span>{" "}
+                    <h1 className={styles.pageTitle}>كل المهام</h1>{" "}
+                    <p className={styles.pageDescription}>
+                      {" "}
+                      كل مهامك في مكان واحد، رتّبها وأنجزها بسهولة.{" "}
+                    </p>{" "}
+                  </div>{" "}
+                </div>{" "}
+                <div className={styles.tasksSection}>
+                  {" "}
+                  <TaskList userId={userId} />{" "}
+                </div>{" "}
+              </section>
+            )}{" "}
+            {activeView === "categories" && (
+              <section className={styles.dashboardView}>
+                {" "}
+                <CategoriesView userId={userId} />{" "}
+              </section>
+            )}{" "}
+            {activeView === "settings" && (
+              <section className={styles.dashboardView}>
+                {" "}
+                <SettingsView userId={userId} userEmail={userEmail} />{" "}
+              </section>
+            )}{" "}
+          </div>{" "}
+        </div>{" "}
+      </main>{" "}
+      <TaskModal userId={userId} />{" "}
     </div>
   );
 }
